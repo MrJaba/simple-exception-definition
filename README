@@ -1,0 +1,47 @@
+SimpleExceptionDefinition
+=========================
+
+I've found in a few projects I define quite a few custom exceptions, I prefer them as they often express the intent of the exception much more clearly and can increase readability.  However, most follow a very similar pattern, which isn't very DRY at all, so this plugin goes a little way to help with that.  
+
+
+Example
+=======
+
+class Example
+
+	define_exception :my_custom_exception
+	
+	def rescue_bad_things
+		begin
+			do_bad_things
+		rescue MyCustomException => e
+			logger.error(e.message)
+		end
+	end
+	
+	def do_bad_things
+		raise MyCustomException.new("Error message")
+	end
+
+end
+
+instead of:
+
+class Example
+	...
+end
+
+class MyCustomException < StandardError
+	def initialize( error_message, object )
+		@message = error_message
+		@object = object
+	end
+	
+	def message
+		@message
+	end
+end
+
+Saves a few lines at least :)
+
+Copyright (c) 2008 [Tom Crinson], released under the MIT license
