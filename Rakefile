@@ -1,6 +1,10 @@
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
+require 'rake/gempackagetask'
+require 'rake/clean'
+
+include FileUtils
 
 desc 'Default: run unit tests.'
 task :default => :test
@@ -19,4 +23,30 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+NAME = "simple-exception-definition"
+GEMVERSION = "0.1"
+
+CLEAN.include "pkg"
+
+spec = Gem::Specification.new do |s|
+  s.name         = NAME
+  s.version      = GEMVERSION
+  s.platform     = Gem::Platform::RUBY
+  s.author       = "Tom Crinson"
+  s.email        = "the.jaba@gmail.com"
+  s.summary      = "DRY up your exception definitions"
+  s.description  = s.summary
+  s.require_path = "lib"
+  s.files        = %w( MIT-LICENSE Rakefile ) + Dir["{lib}/**/*"]
+end
+
+Rake::GemPackageTask.new(spec) do |package|
+  package.gem_spec = spec
+end
+
+desc "Run :package and install the resulting .gem"
+task :install => :package do
+  sh %{sudo gem install --local pkg/#{NAME}-#{GEMVERSION}.gem --no-rdoc --no-ri}
 end
