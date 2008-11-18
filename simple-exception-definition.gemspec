@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
-  s.name         = NAME
-  s.version      = GEMVERSION
+  s.name         = "simple-exception-definition"
+  s.version      = "0.1"
   s.platform     = Gem::Platform::RUBY
   s.author       = "Tom Crinson"
   s.email        = "the.jaba@gmail.com"
