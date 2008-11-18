@@ -46,6 +46,13 @@ Rake::GemPackageTask.new(spec) do |package|
   package.gem_spec = spec
 end
 
+desc "Create a gemspec file"
+task :make_spec do
+  File.open("#{NAME}.gemspec", "w") do |file|
+    file.puts spec.to_ruby
+  end
+end
+
 desc "Run :package and install the resulting .gem"
 task :install => :package do
   sh %{sudo gem install --local pkg/#{NAME}-#{GEMVERSION}.gem --no-rdoc --no-ri}
